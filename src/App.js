@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Container, Header } from 'semantic-ui-react'
-import Contacts from './contacts/Contacts'
+import { Container, Header, Button, Icon, Segment } from 'semantic-ui-react';
+import Contacts from './contacts/Contacts';
+import ContactForm from './contacts/ContactForm';
 
 class App extends Component {
 
@@ -10,14 +11,46 @@ class App extends Component {
       {id: 2, firstName: 'Joe', phone: '555-555-5555'},
       {id: 3, firstName: 'Joe-Bob', phone: '555-555-5555'}
 
-    ]
+    ],
+    showForm: true
   }
+
+  toggleForm = () => {
+    this.setState({ showForm: !this.state.showForm })
+  }
+
+  addContact = (contactData) => {
+    let contact = {id: this.getId(), ...contactData }
+    this.setState({ contacts: [contact, ...this.state.contacts] })
+  }
+
+  getId = () =>{
+    return Math.floor((1 + Math.random())* 0x10000)
+    .toString(16)
+    .substring(1)
+  }
+
+  removeContact = (id) => {
+    const contacts = this.state.contacts.filter( contact => {
+      if (contact.id !== id )
+        return contact
+    })
+    this.setState({ contacts: [...contacts]})
+  }
+
   render() {
-    const {contacts} = this.state
+    const {contacts, showForm} = this.state
     return (
       <Container>
         <Header as='h1'>React Contact List</Header>
-        <Contacts contacts={contacts} />
+        <Segment>
+          <Button icon color='brown' onClick={this.toggleForm}>
+            <Icon name={ showForm ? 'angle double up' : 'angle double down' } />
+          </Button>
+        { showForm ?<ContactForm add={this.addContact}/>: null}
+        </Segment>
+        <br></br>
+        <Contacts contacts={contacts} remove={this.removeContact} />
       </Container>
     );
   }
