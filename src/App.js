@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Container, Header } from 'semantic-ui-react'
+import Contacts from './contacts/Contacts'
 
 class App extends Component {
+
+  state = {
+    contacts: [
+      {id: 1, firstName: 'Bob', phone: '555-555-5555'},
+      {id: 2, firstName: 'Joe', phone: '555-555-5555'},
+      {id: 3, firstName: 'Joe-Bob', phone: '555-555-5555'}
+
+    ]
+  }
   render() {
+    const {contacts} = this.state
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Container>
+        <Header as='h1'>React Contact List</Header>
+        <Contacts contacts={contacts} />
+      </Container>
     );
   }
 }
